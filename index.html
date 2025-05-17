@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Scoring Quiz</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-box, .result-box {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #00f2fe;
+      text-align: center;
+      max-width: 600px;
+    }
+    button {
+      margin: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #00f2fe;
+      border: none;
+      border-radius: 10px;
+      color: #000;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #00c6ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-box" id="quiz-box">
+    <h2 id="question"></h2>
+    <div id="choices"></div>
+  </div>
+
+  <div class="result-box" id="result-box" style="display:none">
+    <h2>Your Score: <span id="score"></span></h2>
+    <button onclick="startQuiz()">Retry</button>
+    <button onclick="location.href='https://new.express.adobe.com/webpage/NhRZcBILvQe4s'">Go back home</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "How often do you follow traffic laws and public regulations?",
+        choices: ["Always", "Often", "Sometimes", "Rarely"],
+        scores: [5, 4, 2, 1]
+      },
+      {
+        question: "How would you describe your financial management habits?",
+        choices: ["Very responsible", "Somewhat responsible", "Unstable", "Irresponsible"],
+        scores: [5, 4, 2, 1]
+      },
+      {
+        question: "How is your relationship with your social network?",
+        choices: ["Positive and trusted", "Neutral", "Occasionally problematic", "Controversial"],
+        scores: [5, 4, 2, 1]
+      },
+      {
+        question: "What is your online behavior like?",
+        choices: ["Respectful and constructive", "Occasionally emotional", "Argumentative", "Disruptive or offensive"],
+        scores: [5, 4, 2, 1]
+      },
+      {
+        question: "How healthy is your lifestyle?",
+        choices: ["Very healthy", "Moderately healthy", "Not very healthy", "Unhealthy"],
+        scores: [5, 4, 2, 1]
+      }
+    ];
+
+    let currentQuestion = 0;
+    let totalScore = 0;
+
+    function startQuiz() {
+      currentQuestion = 0;
+      totalScore = 0;
+      document.getElementById('result-box').style.display = 'none';
+      document.getElementById('quiz-box').style.display = 'block';
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById('question').textContent = q.question;
+      const choicesDiv = document.getElementById('choices');
+      choicesDiv.innerHTML = '';
+      q.choices.forEach((choice, index) => {
+        const btn = document.createElement('button');
+        btn.textContent = choice;
+        btn.onclick = () => handleAnswer(q.scores[index]);
+        choicesDiv.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(score) {
+      totalScore += score;
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      let grade = '';
+      if (totalScore >= 23) grade = 'S';
+      else if (totalScore >= 20) grade = 'A';
+      else if (totalScore >= 15) grade = 'B';
+      else if (totalScore >= 10) grade = 'C';
+      else grade = 'D';
+
+      document.getElementById('score').textContent = grade;
+      document.getElementById('quiz-box').style.display = 'none';
+      document.getElementById('result-box').style.display = 'block';
+    }
+
+    startQuiz();
+  </script>
+</body>
+</html>
